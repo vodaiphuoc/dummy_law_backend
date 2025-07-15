@@ -1,0 +1,9 @@
+myenv/
+.env
+*.json
+test_tavily.py
+test2.py
+frontend/
+backend/
+*.yml
+Dockerfile
