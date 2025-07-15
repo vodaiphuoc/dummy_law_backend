@@ -1,4 +1,5 @@
 fastapi
+uvicorn
 pydantic
 tavily-python
 google-genai
