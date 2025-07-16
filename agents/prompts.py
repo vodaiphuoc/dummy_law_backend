@@ -50,10 +50,10 @@ Bạn là một trợ lý AI pháp lý chuyên gia của Việt Nam.
 """
 
 FINAL_ANSWER_PROMPT = """
+** Trả lời câu hỏi dưới đây sau dựa vào cac nguồn liên quan trên ** 
+câu hỏi chính: {query}
+
 ** Dưới đây các nguồn liên quan thu thập được online dưới dạng markdown, chỉ mang tính tham khảo, 
 câu hỏi chính có thể  khác biệt câu hỏi trong kết quả tìm kiếm **
 {infors}
-
-** Bây giờ, trả lời câu hỏi dưới đây sau dựa vào cac nguồn liên quan trên ** 
-câu hỏi chính: {query}
 """

@@ -6,7 +6,7 @@ import asyncio
 import json
 
 
-main_config = Configuration(use_filtering_model=True)
+main_config = Configuration(use_filtering_model=False)
 
 intent_clf_agent = IntentAgent(config = main_config)
 search_agent = SearchAgent(config = main_config)
@@ -14,8 +14,9 @@ final_agent = FinalAnswerAgent(config = main_config)
 
 
 async def main():
-
-    query= "Hành vi không chấp hành hiệu lệnh của đèn tín hiệu giao thông, không chấp hành hiệu lệnh, hướng dẫn của người điều khiển giao thông hoặc người kiểm soát giao thông đối với người điều khiển xe ô tô, xe chở người bốn bánh có gắn động cơ, xe chở hàng bốn bánh có gắn động cơ và các loại xe tương tự xe ô tô bị xử phạt vi phạm hành chính như thế nào?"
+    # query = "luật công chứng 2024 có hiệu lực khi nào?"
+    query = "UBND xã được chứng thực loại giấy tờ nào?"
+    # query= "Hành vi không chấp hành hiệu lệnh của đèn tín hiệu giao thông, không chấp hành hiệu lệnh, hướng dẫn của người điều khiển giao thông hoặc người kiểm soát giao thông đối với người điều khiển xe ô tô, xe chở người bốn bánh có gắn động cơ, xe chở hàng bốn bánh có gắn động cơ và các loại xe tương tự xe ô tô bị xử phạt vi phạm hành chính như thế nào?"
     
     result = await intent_clf_agent.run(query = query)
     if result:
