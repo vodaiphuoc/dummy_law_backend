@@ -23,7 +23,7 @@ from contextlib import asynccontextmanager
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    main_config = Configuration(use_filtering_model=False)
+    main_config = Configuration()
     app.intent_clf_agent = IntentAgent(config = main_config)
     app.search_agent = SearchAgent(config = main_config)
     app.final_agent = FinalAnswerAgent(config = main_config)
