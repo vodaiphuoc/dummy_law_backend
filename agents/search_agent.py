@@ -1,24 +1,22 @@
-from tavily import TavilyClient
-from google import genai
+from tavily import TavilyClient, AsyncTavilyClient
 from google.genai import types
 import re
 import json
 from dotenv import load_dotenv
 import os
-import asyncio
 from typing import Union
-
+import asyncio
 
 from .schemas import PAGE_MAIN_CONTENT, LawDocModel
-from .prompts import FILTERING_SYSTEM_PROMPT, PER_PAGE_DOCUMENT_PROMPT
 from .configs import Configuration, TavilySearchConfig, TavilyExtractConfig
 from .utils import make_logger, measure_time
 
-
 logger = make_logger(__name__)
 
-
 class FindDocLaw(object):
+    r"""
+    Currently not use now, can benefit for offload data for RAG
+    """
     def __init__(self):
         self._general_pattern = "\[(?:Luật|Nghị định).*?\]\(.*?\)"
         self._law_code_pattern = "\[(?:Luật|Nghị định).*?\]"
@@ -49,85 +47,60 @@ class FindDocLaw(object):
                     LawDocModel(doc_number=k, url= v)
                     for k, v in found_docs.items()
                 ]
-                
+
+
+_PAGE_TOP_PATTERN = r"\[Đăng nhập bằng FaceBook\]\(http.*?png\)|\[Avatar\]\(http.*?png\)|Tham vấn bởi Luật sư|\[Mục lục bài viết\]|Đang tải văn bản"
+_PAGE_BOTTOM_PATTERN = r"\[Hỏi đáp pháp luật\]\(\)\n|Chủ đề đang được đánh giá|vui lòng gửi về Email |=>>Xem thêm|!\[Thư viện nhà đất\]\(\)|!\[Pháp luật\]\(\)|HỎI ĐÁP PHÁP LUẬT LIÊN QUAN|Nội dung bài viết chỉ mang tính chất tham khảo| Bạn hãy nhập e-mail đã sử dụng để đăng ký thành viên"
+_CLEAN_PATTERN=r"\[\]\(http.*?png\)"
+
+async def _text_trimming(extract_result_element: dict[str,str])->dict[str,str]:
+    text = extract_result_element['raw_content']
+    res = re.search(_PAGE_TOP_PATTERN, text)
+    try:
+        start_idx = res.span()[-1]
+    except Exception as e:
+        logger.error('error in text_timming start_idx: {}\nContent: {}'.format(e, text))
+        start_idx = 0
+
+    res = re.search(_PAGE_BOTTOM_PATTERN, text, re.IGNORECASE)
+    try:
+        end_idx = res.span()[0]
+    except Exception as e:
+        logger.error('error in text_timming end_idx: {}\nContent: {}'.format(e, text))
+        end_idx = len(text)-1
+
+    cleaned_text = re.sub(_CLEAN_PATTERN, '',text[start_idx: end_idx])
+    extract_result_element['raw_content'] = cleaned_text
+    return extract_result_element
+
+async def _post_tavily_extract_processing(extract_results: list[dict[str,str]]):
+    return await asyncio.gather(*[
+        _text_trimming(ele)
+        for ele in extract_results['results']
+    ])
 
 class SearchAgent(object):
 
-    _filter_config = types.GenerateContentConfig(
-        system_instruction=FILTERING_SYSTEM_PROMPT,
-        response_schema=PAGE_MAIN_CONTENT,
-        response_mime_type='application/json',
-        temperature = 0.1
-    )
-
     def __init__(self, config: Configuration):
         load_dotenv()
-        if os.getenv("GEMINI_API_KEY") is None:
-            raise ValueError("GEMINI_API_KEY is not set")
         if os.getenv("TAVILY_API_KEY") is None:
             raise ValueError("TAVILY_API_KEY is not set")
 
         self.config = config
-        self.tavily_client = TavilyClient(api_key= os.getenv("TAVILY_API_KEY"))
+        self.tavily_client = AsyncTavilyClient(api_key= os.getenv("TAVILY_API_KEY"))
         self._search_kwargs = TavilySearchConfig().model_dump()
         self._extract_kwargs = TavilyExtractConfig().model_dump()
-
-        if self.config.use_filtering_model:
-            self.filtering_model = genai.Client(api_key=os.getenv('GEMINI_API_KEY'))
-
-        self.lawdoc_finding = FindDocLaw()
-
-    @measure_time(logger= logger)
-    async def _filtering(self, input_prompt:str)->PAGE_MAIN_CONTENT:
-        r""""
-        Filter out the main content of the webpage
-        discard header or any other parts in body of the page
-        """
-        
-        response = await self.filtering_model.aio.models.generate_content(
-            model = self.config.filtering_model,
-            contents = input_prompt,
-            config = self._filter_config,
-        )
-        
-        page_content = None
-        if response.parsed is None:
-            logger.info("response.parsed is None")
-            page_content =  PAGE_MAIN_CONTENT(**json.loads(response.text))
-        else:
-            page_content:PAGE_MAIN_CONTENT = response.parsed
-        
-        # found_law_docs = self.lawdoc_finding.find(page_content= page_content.main_content)
-
-        # if found_law_docs is not None:
-        #     urls = [
-        #             found_law_docs[_ith].url 
-        #             for _ith in range(len(found_law_docs))
-        #         ]
-        #     lawdoc_contents = self.tavily_client.extract(
-        #         urls=urls,
-        #         **self._extract_kwargs
-        #     )
-
-        #     for each_result in lawdoc_contents['results']:
-        #         _index = urls.index(each_result['url'])
-        #         print(each_result['url'], _index)
-        #         print(each_result['raw_content'])
-        #         found_law_docs[_index].content = each_result['raw_content']
-
-        # page_content.law_docs = found_law_docs
-        return page_content
 
     @measure_time(logger = logger)
     async def run(self, query:str):
         # fast search
-        search_results = self.tavily_client.search(
+        search_results = await self.tavily_client.search(
             query = query,
             **self._search_kwargs
         )
 
         # extract list of urls
-        extract_results = self.tavily_client.extract(
+        extract_results = await self.tavily_client.extract(
             urls=[
                 res['url'] 
                 for res in search_results['results']
@@ -135,29 +108,16 @@ class SearchAgent(object):
             **self._extract_kwargs
         )
 
-        if self.config.use_filtering_model:
-            # cleaning with llm
-            response: list[PAGE_MAIN_CONTENT] = await asyncio.gather(*[
-                self._filtering(
-                    input_prompt=PER_PAGE_DOCUMENT_PROMPT.format(
-                        query = query,
-                        ith = ith,
-                        **ele
-                    )
-                )
-                for ith, ele in 
-                enumerate(extract_results['results'])
-            ])
-            return response
-        
-        else:
-            return [
-                PAGE_MAIN_CONTENT(
-                    web_page_number= ith,
-                    main_content= ele['raw_content'],
-                    url= ele['url']
-                )
-                for ith, ele in 
-                enumerate(extract_results['results'])
-            ]
-        
+        # trimming using regex
+        trim_results = await _post_tavily_extract_processing(extract_results)
+
+        return [
+            PAGE_MAIN_CONTENT(
+                web_page_number= ith,
+                main_content= ele['raw_content'],
+                url= ele['url']
+            )
+            for ith, ele in 
+            enumerate(trim_results)
+        ]
+    

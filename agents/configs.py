@@ -42,7 +42,10 @@ class TavilySearchConfig(TavilyConfigBase):
     )
 
     include_domains: list[str] = Field(
-        default=["luatvietnam.vn","thuvienphapluat.vn"], 
+        default=[
+            # "luatvietnam.vn",
+            "thuvienphapluat.vn"
+        ], 
         description="dedicated domains to lookup"
     )
 
@@ -70,18 +73,6 @@ class Configuration(BaseModel):
         default="gemini-2.5-flash-lite-preview-06-17",
         metadata={
             "description": "The name of the language model to use for intent classification"
-        },
-    )
-
-    use_filtering_model: bool = Field(
-        default=True,
-        description="use LLM for filter content from web or not"
-    )
-
-    filtering_model: str = Field(
-        default="gemini-2.5-flash-lite-preview-06-17",
-        metadata={
-            "description": "The name of the language model to use for summarization scrape content"
         },
     )
 
