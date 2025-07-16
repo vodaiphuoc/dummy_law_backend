@@ -8,7 +8,7 @@ import asyncio
 from typing import Union
 
 
-from .schemas import PAGE_MAIN_CONTENT
+from .schemas import PAGE_MAIN_CONTENT, ReasoningResult
 from .prompts import FINAL_ANSWER_SYSTEM_PROMPT, FINAL_ANSWER_PROMPT
 from .configs import Configuration
 from .utils import make_logger, measure_time
@@ -20,6 +20,7 @@ class FinalAnswerAgent(object):
 
     _answer_config = types.GenerateContentConfig(
         system_instruction=FINAL_ANSWER_SYSTEM_PROMPT,
+        response_schema=ReasoningResult,
         response_mime_type='application/json',
         temperature = 1.0
     )
@@ -59,5 +60,5 @@ class FinalAnswerAgent(object):
             ),
             config = self._answer_config,
         )
-
-        return response.text
+        
+        return response.parsed.tostring

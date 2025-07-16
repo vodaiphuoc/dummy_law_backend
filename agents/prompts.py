@@ -56,4 +56,5 @@ câu hỏi chính: {query}
 ** Dưới đây các nguồn liên quan thu thập được online dưới dạng markdown, chỉ mang tính tham khảo, 
 câu hỏi chính có thể  khác biệt câu hỏi trong kết quả tìm kiếm **
 {infors}
+- chỉ tập trung vào câu hỏi chính, không trả lời câu hỏi trong các nguồn liên quan
 """
