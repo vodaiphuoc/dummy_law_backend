@@ -43,8 +43,16 @@ class TavilySearchConfig(TavilyConfigBase):
 
     include_domains: list[str] = Field(
         default=[
+            "luatvietnam.vn",
+            "https://thuvienphapluat.vn"
+        ], 
+        description="dedicated domains to lookup"
+    )
+
+    exclude_domains: list[str] = Field(
+        default=[
             # "luatvietnam.vn",
-            "thuvienphapluat.vn"
+            "https://dantri.vn"
         ], 
         description="dedicated domains to lookup"
     )

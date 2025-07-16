@@ -8,3 +8,6 @@ backend/
 *.yml
 Dockerfile
 __pycache__/
+test_url.py
+test_crawl.py
+test_regex.py

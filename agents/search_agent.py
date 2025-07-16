@@ -49,25 +49,29 @@ class FindDocLaw(object):
                 ]
 
 
-_PAGE_TOP_PATTERN = r"\[Đăng nhập bằng FaceBook\]\(http.*?png\)|\[Avatar\]\(http.*?png\)|Tham vấn bởi Luật sư|\[Mục lục bài viết\]|Đang tải văn bản"
-_PAGE_BOTTOM_PATTERN = r"\[Hỏi đáp pháp luật\]\(\)\n|Chủ đề đang được đánh giá|vui lòng gửi về Email |=>>Xem thêm|!\[Thư viện nhà đất\]\(\)|!\[Pháp luật\]\(\)|HỎI ĐÁP PHÁP LUẬT LIÊN QUAN|Nội dung bài viết chỉ mang tính chất tham khảo| Bạn hãy nhập e-mail đã sử dụng để đăng ký thành viên"
+_PAGE_TOP_PATTERN = r"\[Đăng nhập bằng FaceBook\]\(http.*?png\)|\[Avatar\]\(http.*?png\)|Tham vấn bởi Luật sư|\[Mục lục bài viết\]|Đang tải văn bản|Trang chủ"
+_PAGE_BOTTOM_PATTERN = r"\[Hỏi đáp pháp luật\]\(\)\n|Chủ đề đang được đánh giá|vui lòng gửi về Email |=>>Xem thêm|!\[Thư viện nhà đất\]\(\)|!\[Pháp luật\]\(\)|\[\]\(.*?png\)|HỎI ĐÁP PHÁP LUẬT LIÊN QUAN|Nội dung bài viết chỉ mang tính chất tham khảo| Bạn hãy nhập e-mail đã sử dụng để đăng ký thành viên|Trân trọng|Quý khách cần hỏi thêm thông tin về  có thể đặt câu hỏi tại đây.|Đặt câu hỏi"
 _CLEAN_PATTERN=r"\[\]\(http.*?png\)"
 
 async def _text_trimming(extract_result_element: dict[str,str])->dict[str,str]:
+    url = extract_result_element['url']
+    
     text = extract_result_element['raw_content']
     res = re.search(_PAGE_TOP_PATTERN, text)
     try:
         start_idx = res.span()[-1]
     except Exception as e:
-        logger.error('error in text_timming start_idx: {}\nContent: {}'.format(e, text))
+        logger.error('error in text_timming start_idx: {}, url: {}'.format(e, url))
         start_idx = 0
+        return None
 
     res = re.search(_PAGE_BOTTOM_PATTERN, text, re.IGNORECASE)
     try:
         end_idx = res.span()[0]
     except Exception as e:
-        logger.error('error in text_timming end_idx: {}\nContent: {}'.format(e, text))
+        logger.error("error in text_timming end_idx: {}, url: {}\m------- END LOG".format(e, url))
         end_idx = len(text)-1
+        return None
 
     cleaned_text = re.sub(_CLEAN_PATTERN, '',text[start_idx: end_idx])
     extract_result_element['raw_content'] = cleaned_text
@@ -96,7 +100,7 @@ class SearchAgent(object):
         # fast search
         search_results = await self.tavily_client.search(
             query = query,
-            **self._search_kwargs
+            **self._search_kwargs,
         )
 
         # extract list of urls
@@ -110,6 +114,8 @@ class SearchAgent(object):
 
         # trimming using regex
         trim_results = await _post_tavily_extract_processing(extract_results)
+
+        trim_results = [ele for ele in trim_results if ele is not None]
 
         return [
             PAGE_MAIN_CONTENT(

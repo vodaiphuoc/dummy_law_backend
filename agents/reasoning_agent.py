@@ -22,7 +22,11 @@ class FinalAnswerAgent(object):
         system_instruction=FINAL_ANSWER_SYSTEM_PROMPT,
         response_schema=ReasoningResult,
         response_mime_type='application/json',
-        temperature = 1.0
+        temperature = 1.0,
+        thinking_config=types.ThinkingConfig(
+            thinking_budget=2048,
+            include_thoughts=False
+            )
     )
 
     _basemodel2string = """
@@ -60,5 +64,8 @@ class FinalAnswerAgent(object):
             ),
             config = self._answer_config,
         )
-        
-        return response.parsed.tostring
+        if response.parsed is not None:
+            return response.parsed.tostring
+        else:
+            logger.info("response.parsed is not None")
+            return response.text
