@@ -1,7 +1,9 @@
 myenv/
 .env
 frontend/node_modules/
-*data.json
+package-lock.json
+.next/
+*data*.json
 test_tavily.py
 test2.py
 *.yml
