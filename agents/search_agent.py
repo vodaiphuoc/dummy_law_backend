@@ -84,6 +84,7 @@ async def _post_tavily_extract_processing(extract_results: list[dict[str,str]]):
     ])
 
 class SearchAgent(object):
+    r"""Search agent with support of Tavily"""
 
     def __init__(self, config: Configuration):
         load_dotenv()

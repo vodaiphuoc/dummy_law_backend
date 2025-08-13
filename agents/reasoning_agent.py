@@ -17,6 +17,7 @@ from .utils import make_logger, measure_time
 logger = make_logger(__name__)                
 
 class FinalAnswerAgent(object):
+    r"""Final agent aggregate search results and give final answer"""
 
     _answer_config = types.GenerateContentConfig(
         system_instruction=FINAL_ANSWER_SYSTEM_PROMPT,

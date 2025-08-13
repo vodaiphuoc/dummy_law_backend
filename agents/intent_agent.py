@@ -14,6 +14,7 @@ from .utils import make_logger, measure_time
 logger = make_logger(__name__)
 
 class IntentAgent(object):
+    r"""Intent classification agent"""
 
     _intent_config = types.GenerateContentConfig(
         response_schema=ClassificationResult,
