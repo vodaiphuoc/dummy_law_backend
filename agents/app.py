@@ -18,20 +18,26 @@ from agents.configs import Configuration
 import asyncio
 import json
 from contextlib import asynccontextmanager
+import dataclasses
 
-
+@dataclasses.dataclass
+class AgentHolder:
+    intent_clf_agent: IntentAgent
+    search_agent: SearchAgent
+    final_agent: FinalAnswerAgent
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     main_config = Configuration()
-    app.intent_clf_agent = IntentAgent(config = main_config)
-    app.search_agent = SearchAgent(config = main_config)
-    app.final_agent = FinalAnswerAgent(config = main_config)
-    
+    agent_holder: AgentHolder = AgentHolder(
+        intent_clf_agent = IntentAgent(config = main_config),
+        search_agent = SearchAgent(config = main_config),
+        final_agent = FinalAnswerAgent(config = main_config),
+    )
+    app.state.agent_holder = agent_holder
+
     yield
-    app.intent_clf_agent = None
-    app.search_agent = None
-    app.final_agent = None
+    app.state = None
     
 
 # Define the FastAPI app
@@ -158,10 +164,11 @@ async def chat(chat_request: ChatRequest, api_request: Request):
 
         query = chat_request.message
         try:
-            intent, msg = await api_request.app.intent_clf_agent.run(query = query)
+            agent_holder: AgentHolder = api_request.app.state.agent_holder
+            intent, msg = await agent_holder.intent_clf_agent.run(query = query)
             if intent:
-                search_result = await api_request.app.search_agent.run(query = query)
-                answer = await api_request.app.final_agent.run(
+                search_result = await agent_holder.search_agent.run(query = query)
+                answer = await agent_holder.final_agent.run(
                     query = query,
                     search_agent_outputs=search_result
                 )
