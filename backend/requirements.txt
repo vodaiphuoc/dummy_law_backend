@@ -5,3 +5,4 @@ tavily-python
 google-genai
 python-dotenv
 loguru
+jinja2

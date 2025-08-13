@@ -173,7 +173,7 @@ async def chat_router(websocket: WebSocket):
                     websocket= websocket)
 
     except WebSocketDisconnect:
-        websocket.app.manager.disconnect(websocket)
+        websocket.app.state.manager.disconnect(websocket)
 
 
 async def main_run():
