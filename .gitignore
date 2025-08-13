@@ -1,13 +1,13 @@
 myenv/
 .env
-*.json
+frontend/node_modules/
+*data.json
 test_tavily.py
 test2.py
-frontend/
-backend/
 *.yml
 Dockerfile
 __pycache__/
 test_url.py
 test_crawl.py
 test_regex.py
+*test*.py
