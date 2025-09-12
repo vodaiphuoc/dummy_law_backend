@@ -6,11 +6,13 @@
         border-solid"
     id="input-container"
     >
-    
+    <app-file-upload-indicator />
     <input 
         class="p-[var(--msg-input-padding)]"
-        id="msg_input" 
+        id="msg_input"
+        [(ngModel)]="currentText"
         placeholder="Ask me something..." 
+        (paste)="handleClipboardData($event)"
     />
     <p>message-input works!</p>
 </div>
