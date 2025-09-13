@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 
 import { FileUploadItem } from '../file-upload-item/file-upload-item';
 import { ClipboardService } from '../../services/clipboard/clipboard';
-import { SupportFileTypes, ClipboardProcessingResult } from '../../../shared/models/message-types';
+// import { SupportFileTypes, ClipboardProcessingResult } from '../../../shared/models/message-types';
 
 @Component({
     selector: 'app-file-upload-indicator',
@@ -14,7 +14,7 @@ import { SupportFileTypes, ClipboardProcessingResult } from '../../../shared/mod
 export class FileUploadIndicator implements OnInit, OnDestroy {
 
     private clipboardService: ClipboardService = inject(ClipboardService);
-    
+
     private dataSubscription!: Subscription;
 
     images = signal<string[]>([]);
