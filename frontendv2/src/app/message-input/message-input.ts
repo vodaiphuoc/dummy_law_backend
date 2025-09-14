@@ -3,11 +3,12 @@ import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 import { FileUploadIndicator } from './components/file-upload-indicator/file-upload-indicator';
+import { AddFiles } from './components/add-files/add-files';
 import { ClipboardService } from './services/clipboard/clipboard';
 
 @Component({
     selector: 'app-message-input',
-    imports: [FormsModule, FileUploadIndicator],
+    imports: [FormsModule, FileUploadIndicator,AddFiles],
     templateUrl: './message-input.html',
     styleUrl: './message-input.css',
     providers: [ClipboardService]

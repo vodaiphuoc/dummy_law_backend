@@ -7,7 +7,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
     providedIn: 'root'
 })
 export class ClipboardService {
-    private tempData: ClipboardProcessingResult = {type: "text", content: "123"};
+    private tempData: ClipboardProcessingResult = {type: "text", content: ""};
 
     private _sharedData = new BehaviorSubject<ClipboardProcessingResult>(this.tempData);
     public sharedData$: Observable<ClipboardProcessingResult> = this._sharedData.asObservable();
