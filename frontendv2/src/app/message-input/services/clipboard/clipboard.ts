@@ -36,7 +36,7 @@ export class ClipboardService {
                             type: "image",
                             content: e.target?.result as string
                         };
-                        this._sharedData.next(newData);    
+                        this._sharedData.next(newData);
                     };
                     reader.readAsDataURL(imageFile);
                     
