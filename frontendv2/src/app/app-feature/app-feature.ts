@@ -7,7 +7,7 @@ import { ContentDelivery } from '../content-delivery/content-delivery'
 
 @Component({
     selector: 'app-app-feature',
-    imports: [RouterOutlet, Chat, ContentDelivery],
+    imports: [Chat, ContentDelivery],
     templateUrl: './app-feature.html',
     styleUrl: './app-feature.css'
 })

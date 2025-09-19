@@ -1,0 +1,7 @@
+<div>
+    @if (shouldShowLogin()) {
+        <app-login (showRegister)=setShowLoginFromChildComponents(false)/>
+    } @else {
+        <app-register (showLogin)=setShowLoginFromChildComponents(true)/>
+    }
+</div>

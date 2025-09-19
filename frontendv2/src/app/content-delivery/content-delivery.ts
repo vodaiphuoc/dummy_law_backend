@@ -6,7 +6,7 @@ import { ProductListComponent } from './product-list/product-list'
 
 @Component({
     selector: 'app-content-delivery',
-    imports: [RouterOutlet, ProductListComponent],
+    imports: [ProductListComponent],
     templateUrl: './content-delivery.html',
     styleUrl: './content-delivery.css'
 })

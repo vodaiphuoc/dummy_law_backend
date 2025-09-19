@@ -1,9 +1,52 @@
 <header class="nav">
-  <div class="container nav-inner">
-    <nav>      
-        <a routerLink="/app">CHAT APP</a>
-    </nav>
-  </div>
+    <div class="grid grid-flow-col justify-items-center">
+        <div>
+            <button 
+                type="button" 
+                (click)="setAuthenState(true)"
+                class="
+                    flex 
+                    w-0.3 
+                    justify-center
+                    rounded-md 
+                    bg-indigo-500 
+                    px-3 
+                    py-1.5 
+                    text-sm/6 
+                    font-semibold 
+                    text-white 
+                    hover:bg-indigo-400 
+                    focus-visible:outline-2 
+                    focus-visible:outline-offset-2 
+                    focus-visible:outline-indigo-500"
+            >
+                Sign in
+            </button>
+        </div>
+        <div>
+            <button 
+                type="button"
+                (click)="setAuthenState(false)"
+                class="
+                    flex 
+                    w-0.3
+                    justify-center 
+                    rounded-md 
+                    bg-indigo-500 
+                    px-3 
+                    py-1.5 
+                    text-sm/6
+                    font-semibold 
+                    text-white 
+                    hover:bg-indigo-400 
+                    focus-visible:outline-2 
+                    focus-visible:outline-offset-2 
+                    focus-visible:outline-indigo-500"
+            >
+                Register
+            </button>
+        </div>
+    </div>
 </header>
 
 <main>
@@ -68,17 +111,9 @@
         </div>
     </section>
 
-    <section id="contact" class="cta-secondary">
-        <div class="container cta-inner">
-        <div>
-            <h2>Ready to try?</h2>
-            <p>Start your free 14-day trial. No credit card required.</p>
-        </div>
-        <div>
-            <a class="btn btn-primary" routerLink="/signup">Start free trial</a>
-        </div>
-        </div>
-    </section>
+    <div #authenContainer>
+        <app-authen [(shouldShowLogin)]="showLogin"/>
+    </div>
 </main>
 
 <footer class="footer">

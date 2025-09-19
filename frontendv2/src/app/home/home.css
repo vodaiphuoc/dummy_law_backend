@@ -14,7 +14,17 @@
 .hero h1{font-size:2.25rem;margin:0 0 0.5rem}
 .lead{color:#6b7280;margin-bottom:1rem}
 .hero-cta{display:flex;gap:.75rem}
-.mock-card{width:320px;height:220px;border-radius:12px;background:linear-gradient(180deg,#fff,#f6fbfb);display:flex;align-items:center;justify-content:center;color:#6b7280;box-shadow:0 6px 18px rgba(16,24,40,0.08)}
+.mock-card{
+    width:320px;
+    height:220px;
+    border-radius:12px;
+    background:linear-gradient(180deg,#fff,#f6fbfb);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#6b7280;
+    box-shadow:0 6px 18px rgba(13, 14, 51, 0.926)
+}
 
 .grid{display:grid;gap:1rem}
 .grid-3{grid-template-columns:repeat(3,1fr)}
