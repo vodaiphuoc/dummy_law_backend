@@ -1,0 +1,15 @@
+<div class="app-grid">
+    <!-- RIGHT: chatbot, CSR-only -->
+    <div class="left-panel">
+        <ng-container>
+            @if (isBrowser) {
+                <app-chat />
+            }
+        </ng-container>
+    </div>
+
+    <!-- LEFT: product list/detail, SSR + hydration -->
+    <div class="right-panel">
+        <app-content-delivery />
+    </div>
+</div>

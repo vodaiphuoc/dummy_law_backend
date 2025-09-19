@@ -1,8 +1,8 @@
 myenv/
 .env
-frontend/node_modules/
-package-lock.json
-.next/
+.vscode/
+
+
 *data*.json
 test_tavily.py
 test2.py
@@ -13,3 +13,46 @@ test_url.py
 test_crawl.py
 test_regex.py
 *test*.py
+
+.angular
+
+# Compiled output
+dist/
+tmp/
+out-tsc/
+bazel-out/
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# Miscellaneous
+/.angular/cache
+.sass-cache/
+/connect.lock
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
+
+# System files
+.DS_Store
+Thumbs.db
