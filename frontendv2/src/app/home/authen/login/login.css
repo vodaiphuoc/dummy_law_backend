@@ -4,4 +4,6 @@
     display: block;
     position: absolute;
     width: 100%;
+
+    --input-field-height: 40px;
 }

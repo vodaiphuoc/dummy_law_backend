@@ -4,4 +4,13 @@
     display: block;
     position: absolute;
     width: 100%;
+
+
+    overflow: visible;
+
+    --input-field-height: 40px;
+}
+
+#overlay-password {
+    background: linear-gradient(180deg,#dad9ec,#c2f2f2);
 }
