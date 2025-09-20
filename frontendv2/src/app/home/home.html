@@ -111,9 +111,7 @@
         </div>
     </section>
 
-    <div #authenContainer>
-        <app-authen [(shouldShowLogin)]="showLogin"/>
-    </div>
+    <app-authen  #authenContainer [(shouldShowLogin)]="showLogin"/>
 </main>
 
 <footer class="footer">

@@ -12,9 +12,9 @@ import { Authen } from './authen/authen';
 export class Home {
     showLogin: boolean = true;
 
-    @ViewChild('authenContainer') authenContainer!: ElementRef;
+    @ViewChild('authenContainer', { read: ElementRef }) authenContainer!: ElementRef;
 
-    scrollToElement(element: HTMLElement, duration: number = 1000) {
+    scrollToElement(element: HTMLElement, duration: number = 900) {
         const start = window.scrollY;
         const end = element.getBoundingClientRect().top + window.scrollY;
         const distance = end - start;

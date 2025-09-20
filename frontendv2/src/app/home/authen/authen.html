@@ -1,7 +1,18 @@
+<div class="sm:mx-auto sm:w-full sm:max-w-sm py-6">
+    <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company" class="m-auto h-10 w-auto" />
+</div>
 <div>
     @if (shouldShowLogin()) {
-        <app-login (showRegister)=setShowLoginFromChildComponents(false)/>
+        <app-login 
+            (showRegister)=setShowLoginFromChildComponents(false) 
+            animate.enter="enter-animation"
+            animate.leave="leave-animation"
+        />
     } @else {
-        <app-register (showLogin)=setShowLoginFromChildComponents(true)/>
+        <app-register 
+            (showLogin)=setShowLoginFromChildComponents(true)
+            animate.enter="enter-animation"
+            animate.leave="leave-animation"
+        />
     }
 </div>
