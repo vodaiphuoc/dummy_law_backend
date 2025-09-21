@@ -3,11 +3,11 @@ import { isPlatformBrowser } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 
 import { Chat } from '../chat/chat';
-import { ContentDelivery } from '../content-delivery/content-delivery'
+// import { ContentDelivery } from '../content-delivery/content-delivery'
 
 @Component({
     selector: 'app-app-feature',
-    imports: [Chat, ContentDelivery],
+    imports: [Chat],
     templateUrl: './app-feature.html',
     styleUrl: './app-feature.css'
 })

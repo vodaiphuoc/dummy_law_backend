@@ -12,8 +12,8 @@ import {Validators} from '@angular/forms';
 import {OverlayModule} from '@angular/cdk/overlay';
 import { ConnectionPositionPair } from '@angular/cdk/overlay';
 
-import { RegisterModel } from '../../../../shared/models/register-request';
-import { AuthenService } from '../../services/authen-service';
+import { RegisterModel } from '../../../../core/models/authen-request';
+import { AuthenService } from '../../../../core/services/authen-service';
 
 /**
  * check matching of password and repeat password

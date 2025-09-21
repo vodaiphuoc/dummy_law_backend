@@ -1,4 +1,4 @@
-import { Component, output } from '@angular/core';
+import { Component, output, inject } from '@angular/core';
 import {FormGroup, FormControl, ReactiveFormsModule} from '@angular/forms';
 import {Validators} from '@angular/forms';
 
@@ -7,6 +7,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 
+import { AuthenService } from '../../../../core/services/authen-service';
+import { LoginModel } from '../../../../core/models/authen-request';
 
 @Component({
     selector: 'app-login',
@@ -17,6 +19,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class Login {
 
     showRegister = output();
+
+    private authenService = inject(AuthenService);
 
     constructor(
         private matIconRegistry: MatIconRegistry,
@@ -65,7 +69,8 @@ export class Login {
     
     onSubmit() {
         if (this.loginForm.valid) {
-            console.log('Form submitted:', this.loginForm.value);
+            const requestData = this.loginForm.value as LoginModel;
+            this.authenService.login(requestData);
         } else {
             this.loginForm.markAllAsTouched();
             console.warn('Form invalid');

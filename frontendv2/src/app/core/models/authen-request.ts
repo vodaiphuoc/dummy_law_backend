@@ -4,3 +4,8 @@ export interface RegisterModel {
     password: string
     repeatPassword: string
 }
+
+export interface LoginModel {
+    email: string
+    password: string
+}
