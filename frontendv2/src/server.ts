@@ -7,6 +7,7 @@ import {
 
 import express from 'express';
 import { join, dirname, resolve } from 'node:path';
+import { relative } from 'path';
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 const serverDistFolder = join(import.meta.dirname, '../server');
@@ -56,6 +57,11 @@ app.use(
         maxAge: '1y',
         index: false,
         redirect: false,
+        setHeaders: (res, path, stat) => {
+            // path is the absolute path of the file being served
+            const relativePath = relative(browserDistFolder, path);
+            console.log(`Serving static file: ${relativePath}`);
+        }
     }),
 );
 

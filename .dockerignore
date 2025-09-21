@@ -1,0 +1,6 @@
+authen-service/__pycache__
+*/myenv
+.vscode
+.angular
+dist
+node_modules
