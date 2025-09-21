@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, finalize, map, of, throwError } from 'rxjs';
-
+import { Router } from '@angular/router';
 import { RegisterModel, LoginModel } from '../models/authen-request';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthenService {
-    private apiUrl = 'http://localhost:8080'; // FastAPI backend
+    private apiUrl = 'http://127.0.0.1:8080';
     isRefreshing = false;
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private router: Router) {
     }
 
     registerNewAccount(registerData: RegisterModel) {
@@ -19,6 +19,7 @@ export class AuthenService {
             .subscribe({
                 next: responseData => {
                     console.log(responseData);
+                    this.router.navigate(['/app']);
                 }
             })
     }
@@ -45,7 +46,11 @@ export class AuthenService {
     }
 
     login(loginData: LoginModel): Observable<any> {
-        return this.http.post(`${this.apiUrl}/login`, loginData, { withCredentials: true });
+        return this.http.post(
+            `${this.apiUrl}/login`,
+            loginData,
+            { withCredentials: true }
+        );
     }
 
     logout(): void {

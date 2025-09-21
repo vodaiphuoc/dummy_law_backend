@@ -2,11 +2,11 @@ import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { AuthenService } from '../services/authen-service';
 import { catchError, switchMap, throwError } from 'rxjs';
-import { Router } from '@angular/router';
 
 export const authInterceptorFn: HttpInterceptorFn = (req, next) => {
     const authenService = inject(AuthenService);
-    const router: Router = inject(Router);
+
+    console.log('client inspect req: ', req);
 
     return next(req).pipe(
         catchError((error: HttpErrorResponse) => {
