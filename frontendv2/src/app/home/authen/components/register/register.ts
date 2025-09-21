@@ -1,4 +1,4 @@
-import { Component, output } from '@angular/core';
+import { Component, output, inject } from '@angular/core';
 import {
     FormGroup,
     FormControl,
@@ -11,6 +11,9 @@ import {Validators} from '@angular/forms';
 
 import {OverlayModule} from '@angular/cdk/overlay';
 import { ConnectionPositionPair } from '@angular/cdk/overlay';
+
+import { RegisterModel } from '../../../../shared/models/register-request';
+import { AuthenService } from '../../services/authen-service';
 
 /**
  * check matching of password and repeat password
@@ -76,6 +79,8 @@ export function passwordStrengthValidator(): ValidatorFn {
 export class Register {
     showLogin = output();
 
+    private authenService: AuthenService = inject(AuthenService);
+
     pwdOverlayPositions: ConnectionPositionPair[] = [
         {
             originX: 'end',
@@ -136,6 +141,8 @@ export class Register {
     onSubmit() {
         if (this.registerForm.valid) {
             console.log('Form submitted:', this.registerForm.value);
+            const data = this.registerForm.value as RegisterModel;
+            this.authenService.registerNewAccount(data);
         } else {
             this.registerForm.markAllAsTouched();
             console.warn('Form invalid');

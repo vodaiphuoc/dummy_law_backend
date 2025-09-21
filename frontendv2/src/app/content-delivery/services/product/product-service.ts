@@ -13,7 +13,9 @@ export class ProductService {
         private http: HttpClient,
         private state: TransferState,
         @Inject(PLATFORM_ID) private platformId: Object
-    ) {}
+    ) {
+        
+    }
 
     getProducts(): Observable<any> {
         const saved = this.state.get(PRODUCTS_KEY, null);

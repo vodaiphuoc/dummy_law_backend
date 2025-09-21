@@ -1,7 +1,7 @@
 import { Component, model } from '@angular/core';
 
-import { Login } from './login/login';
-import { Register } from './register/register';
+import { Login } from './components/login/login';
+import { Register } from './components/register/register';
 
 @Component({
   selector: 'app-authen',

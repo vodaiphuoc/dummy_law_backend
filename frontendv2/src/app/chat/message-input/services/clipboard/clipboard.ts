@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { SupportFileTypes, ClipboardProcessingResult } from '../../../../shared/models/message-types';
+import { SupportFileTypes, ClipboardProcessingResult } from '../../../../core/models/message-types';
 
 import { BehaviorSubject, Observable } from 'rxjs';
 
