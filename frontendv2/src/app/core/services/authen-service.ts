@@ -8,7 +8,7 @@ import { RegisterModel, LoginModel } from '../models/authen-request';
     providedIn: 'root'
 })
 export class AuthenService {
-    private apiUrl = 'http://127.0.0.1:8080';
+    private apiUrl = '';
     isRefreshing = false;
 
     constructor(private http: HttpClient, private router: Router) {

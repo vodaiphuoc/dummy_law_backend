@@ -8,4 +8,4 @@ RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-CMD ["uvicorn", "--host", "0.0.0.0", "--port", "8080", "main:app"]
+CMD ["python", "main.py"]

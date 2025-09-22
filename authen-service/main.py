@@ -98,7 +98,7 @@ async def register_options():
 @app.post("/api/register")
 async def register(register_data: Annotated[RegisterModel, Body(embedd=True)]):
     # Dummy authentication (replace with DB check)
-    if register_data.fullName != "admin" or register_data.password != "Phuoc272216@@":
+    if register_data.fullName != "admin" or register_data.password != "Pa1998@":
         raise HTTPException(
             status_code=400, 
             detail="Invalid credentials"
@@ -117,16 +117,16 @@ async def register(register_data: Annotated[RegisterModel, Body(embedd=True)]):
         key="jwt",
         value=access_token,
         httponly=True,
-        secure=False,   # set True in production (HTTPS only)
-        samesite="none"
+        secure=True,   # set True in production (HTTPS only)
+        samesite="strict"
     )
 
     response.set_cookie(
         key="refresh_token",
         value=refresh_token,
         httponly=True,
-        secure=False,   # set True in production (HTTPS only)
-        samesite="none"
+        secure=True,   # set True in production (HTTPS only)
+        samesite="strict"
     )
     return response
 
@@ -152,17 +152,12 @@ async def login(username: str, password: str):
     )
     return response
 
-# @app.options("/api/protected")
-# def protected_options():
-#     return JSONResponse(content=None,headers=OptionsCorsHeaders)
-
 @app.get("/api/protected")
-async def protected(request: Request,jwt: str | None = Cookie(default=None)):
-    print('inspect cookies: ',request.cookies)
+async def protected(jwt: str | None = Cookie(default=None)):
     if not jwt:
         logger.info('not jwt')
         raise HTTPException(
-            status_code=401, 
+            status_code=401,
             detail="Missing token",
             headers=CorsHeaders
         )
@@ -229,16 +224,16 @@ async def health_check():
         status_code=200
     )
 
-# async def main_run():
-#     config = uvicorn.Config(
-#         "main:app",
-#         host="0.0.0.0",
-#     	port=8080, 
-#     	reload=True,
-#         log_level = "info"
-#     	)
-#     server = uvicorn.Server(config)
-#     await server.serve()
+async def main_run():
+    config = uvicorn.Config(
+        "main:app",
+        host="0.0.0.0",
+    	port=8080, 
+    	reload=False,
+        log_level = "info"
+    )
+    server = uvicorn.Server(config)
+    await server.serve()
 
-# if __name__ == "__main__":
-#     asyncio.run(main_run())
+if __name__ == "__main__":
+    asyncio.run(main_run())

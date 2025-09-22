@@ -2,6 +2,8 @@
 FROM node:lts-alpine AS build
 WORKDIR /app
 
+
+
 COPY ./frontendv2/*.json .
 
 COPY ./frontendv2/deploy/nginx ./nginx
@@ -14,6 +16,9 @@ RUN npm run build
 
 # Stage 2: Serve 
 FROM nginx:alpine
+
+# Remove default nginx configuration
+RUN rm /etc/nginx/conf.d/*
 
 # Remove default nginx static assets
 RUN rm -rf /usr/share/nginx/html/*

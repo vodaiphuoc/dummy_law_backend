@@ -26,8 +26,8 @@ services:
       - "8080:8080"
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://0.0.0.0:8080/health || exit 1 "]
-      interval: 7s
-      timeout: 10s
+      interval: 20s
+      timeout: 7s
       retries: 4
       start_period: 30s
 

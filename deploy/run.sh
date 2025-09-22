@@ -1,4 +1,7 @@
 #!/bin/bash
+
+TAG=v0.1
+
 CURRENT_FILE_DIR=$(dirname "$(realpath "$0")")
 PROJECT_DIR=$(dirname $(dirname "$(realpath "$0")"))
 
@@ -11,11 +14,11 @@ DEPLOY_URL=$4
 
 
 # frontend
-FRONTEND_IMAGE=chatbot-angular-image
+FRONTEND_IMAGE=chatbot-angular-image:$TAG
 FRONTEND_CONTAINER=chatbot-angular
 
 # authen FASTAPI service
-AUTHEN_IMAGE=chatbot-authen-image
+AUTHEN_IMAGE=chatbot-authen-image:$TAG
 AUTHEN_CONTAINER=chatbot-authen
 SERVER_PORT=8080
 
@@ -35,7 +38,7 @@ endpoints:
   - name: my-app-endpoint
     url: $DEPLOY_URL    
     upstream:
-      url: frontend:80
+      url: frontend-angular:80
 EOF
 
 # make env file for docker compose
