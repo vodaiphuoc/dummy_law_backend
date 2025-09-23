@@ -29,6 +29,7 @@
                         "src/custom-theme.scss",
                         "src/styles.css"
                     ],
+                    "aot": true,
                     "server": "src/main.server.ts",
                     "outputMode": "server",
                     "ssr": {
@@ -59,41 +60,41 @@
                 },
                 "defaultConfiguration": "production"
             },
-                "serve": {
-                    "builder": "@angular/build:dev-server",
-                    "configurations": {
-                        "production": {
-                            "buildTarget": "frontendv2:build:production"
-                        },
-                        "development": {
-                            "buildTarget": "frontendv2:build:development"
-                        }
+            "serve": {
+                "builder": "@angular/build:dev-server",
+                "configurations": {
+                    "production": {
+                        "buildTarget": "frontendv2:build:production"
                     },
-                    "defaultConfiguration": "development"
-                    },
-                    "extract-i18n": {
-                    "builder": "@angular/build:extract-i18n"
-                    },
-                    "test": {
-                    "builder": "@angular/build:karma",
-                    "options": {
-                        "polyfills": [
-                            "zone.js",
-                            "zone.js/testing"
-                        ],
-                        "tsConfig": "tsconfig.spec.json",
-                        "assets": [
-                            {
-                                "glob": "**/*",
-                                "input": "public"
-                            },
-                            "src/assets"
-                        ],
-                        "styles": [
-                            "src/styles.css"
-                        ]
+                    "development": {
+                        "buildTarget": "frontendv2:build:development"
                     }
+                },
+                "defaultConfiguration": "development"
+                },
+                "extract-i18n": {
+                "builder": "@angular/build:extract-i18n"
+                },
+                "test": {
+                "builder": "@angular/build:karma",
+                "options": {
+                    "polyfills": [
+                        "zone.js",
+                        "zone.js/testing"
+                    ],
+                    "tsConfig": "tsconfig.spec.json",
+                    "assets": [
+                        {
+                            "glob": "**/*",
+                            "input": "public"
+                        },
+                        "src/assets"
+                    ],
+                    "styles": [
+                        "src/styles.css"
+                    ]
                 }
+            }
         }
         }
     }
