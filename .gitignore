@@ -60,3 +60,12 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+
+# secrets
+secrets/
+certs/
+*.key
+*.crt
+*.csr
+*.srl

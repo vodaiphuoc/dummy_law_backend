@@ -81,12 +81,12 @@ OptionsCorsHeaders = {
     "Access-Control-Max-Age": "86400",
     "Access-Control-Allow-Headers": "*",
     "Access-Control-Allow-Credentials": "true",
-    "Access-Control-Allow-Origin": "https://mullet-immortal-labrador.ngrok-free.app"
+    "Access-Control-Allow-Origin": "vdpmlmaster.asia"
 }
 
 CorsHeaders = {
     "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "https://mullet-immortal-labrador.ngrok-free.app",
+    "Access-Control-Allow-Origin": "vdpmlmaster.asia",
     "Access-Control-Allow-Credentials": "true",
     "Vary": "Origin"
 }
@@ -224,16 +224,16 @@ async def health_check():
         status_code=200
     )
 
-async def main_run():
-    config = uvicorn.Config(
-        "main:app",
-        host="0.0.0.0",
-    	port=8080, 
-    	reload=False,
-        log_level = "info"
-    )
-    server = uvicorn.Server(config)
-    await server.serve()
+# async def main_run():
+#     config = uvicorn.Config("main:app",
+#     	port=8443,
+#         ssl_certfile="/home/vodaiphuoc/Projects/chatbot-law-search/deploy/cloudflare/certs/authen-service/authen.crt",
+#         ssl_keyfile="/home/vodaiphuoc/Projects/chatbot-law-search/deploy/cloudflare/certs/authen-service/authen.key",
+#         ssl_ca_certs="/home/vodaiphuoc/Projects/chatbot-law-search/deploy/cloudflare/certs/root/ca.crt",
+#         ssl_cert_reqs=2
+#     	)
+#     server = uvicorn.Server(config)
+#     await server.serve()
 
-if __name__ == "__main__":
-    asyncio.run(main_run())
+# if __name__ == "__main__":
+#     asyncio.run(main_run())

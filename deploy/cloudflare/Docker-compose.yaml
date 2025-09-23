@@ -1,0 +1,53 @@
+name: chatbot-law
+services:
+  nginx-service:
+    image: $NGINX_IMAGE
+    container_name: $NGINX_CONTAINER
+    ports:
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certs:/etc/nginx/certs:ro
+    networks:
+      - chatbot-network
+    depends_on:
+      authen-service:
+        condition: service_healthy
+
+  authen-service:
+    container_name: $AUTHEN_CONTAINER
+    image: $AUTHEN_IMAGE
+    build:
+      context: ../../
+      dockerfile: ./authen-service/Dockerfile
+    volumes:
+      - ./certs:/certs:ro
+    environment:
+      AUTHEN_PORT: $AUTHEN_PORT
+      SSL_PATH: /certs/authen-service
+      SSL_ROOT_PATH: /certs/root
+    networks:
+      - chatbot-network
+    restart: always
+    ports:
+      - "8443:8443"
+    healthcheck:
+        test: [
+                "CMD-SHELL",
+                "curl --fail --cacert /certs/root/ca.crt --cert /certs/nginx-service/nginx.crt --key /certs/nginx-service/nginx.key https://0.0.0.0:8443/health >> /proc/1/fd/1 2>&1"
+                # "curl",
+                # "--fail",
+                # "--cacert", "/certs/root/ca.crt",
+                # "--cert", "/certs/nginx-service/nginx.crt",
+                # "--key", "/certs/nginx-service/nginx.key",
+                # "https://0.0.0.0:8443/health"
+            ]
+        interval: 10s
+        timeout: 7s
+        retries: 4
+        start_period: 30s
+
+
+networks:
+  chatbot-network:
+    driver: bridge
