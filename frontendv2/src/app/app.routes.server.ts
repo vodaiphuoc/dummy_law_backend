@@ -12,5 +12,9 @@ export const serverRoutes: ServerRoute[] = [
     {
         path: 'app',
         renderMode: RenderMode.Client
+    },
+    {
+        path: '**',
+        renderMode: RenderMode.Prerender
     }
 ];
